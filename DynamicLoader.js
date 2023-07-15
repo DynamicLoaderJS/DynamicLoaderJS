@@ -1,6 +1,6 @@
 // DynamicLoader.js
 
-var DynamicLoader = (function() {
+var dl = (function() {
   // Private variables
   var contentContainerId = 'contentContainer';
   var loadingIndicatorId = 'loadingIndicator';
@@ -30,15 +30,13 @@ var DynamicLoader = (function() {
     showLoadingIndicator();
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-      if (this.readyState === 4) {
-        if (this.status === 200) {
-          var contentContainer = document.getElementById(contentContainerId);
-          contentContainer.innerHTML = this.responseText;
-          contentContainer.style.display = 'block'; // Show the loaded content
-          hideLoadingIndicator();
-        } else {
-          handleAjaxError();
-        }
+      if (this.readyState === 4 && this.status === 200) {
+        var contentContainer = document.getElementById(contentContainerId);
+        contentContainer.innerHTML = this.responseText;
+        contentContainer.style.display = 'block'; // Show the loaded content
+        hideLoadingIndicator();
+      } else if (this.readyState === 4) {
+        handleAjaxError();
       }
     };
     xhttp.open('GET', page + '.html', true);
@@ -60,11 +58,47 @@ var DynamicLoader = (function() {
     pageNotFoundMessage = message;
   }
   
+  // Public function to load dynamic content from data-load attribute
+  function loadDynamicContent(element) {
+    var url = element.getAttribute('data-load');
+    
+    if (url) {
+      showLoadingIndicator();
+      
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            element.innerHTML = this.responseText;
+            element.style.display = 'block'; // Show the loaded content
+            hideLoadingIndicator();
+          } else {
+            handleAjaxError();
+          }
+        }
+      };
+      
+      xhttp.open('GET', url, true);
+      xhttp.send();
+    }
+  }
+  
+  // Public function to initialize dynamic content loading
+  function initializeDynamicLoading() {
+    var dynamicElements = document.querySelectorAll('[dynamic]');
+    
+    dynamicElements.forEach(function(element) {
+      loadDynamicContent(element);
+    });
+  }
+  
   // Public API
   return {
     loadContent: loadContent,
     setContentContainerId: setContentContainerId,
     setLoadingIndicatorId: setLoadingIndicatorId,
-    setPageNotFoundMessage: setPageNotFoundMessage
+    setPageNotFoundMessage: setPageNotFoundMessage,
+    loadDynamicContent: loadDynamicContent,
+    initializeDynamicLoading: initializeDynamicLoading
   };
 })();
