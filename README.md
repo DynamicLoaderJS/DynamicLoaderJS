@@ -1,44 +1,92 @@
 
-# Dynamic Website Example
+# DynamicLoader.js
 
-This is an example repository demonstrating the creation of a dynamic website using the DynamicLoader.js library.
-
-## Description
-
-This repository contains a simple dynamic website that uses client-side routing to render different components based on the URL hash. The website showcases how to create a dynamic user interface without relying on server-side code.
+DynamicLoader.js is a lightweight JavaScript library for creating dynamic web applications with client-side routing and component-based architecture.
 
 ## Features
 
-- Client-side routing using hash-based URLs
 - Component-based architecture
-- Basic state management
-- Registration of components and routes
-- Handling 404 errors on GitHub Pages
+- Client-side routing
+- State management
+- Error handling
+- Templating engine
 
 ## Getting Started
 
-### Prerequisites
-
-- Web browser (Chrome, Firefox, Safari, etc.)
-
 ### Installation
 
-1. Clone the repository:
+You can include DynamicLoader.js in your project by downloading the [DynamicLoader.js](DynamicLoader.js) file and adding it to your project's directory.
 
-```shell
-git clone https://github.com/your-username/dynamic-website-example.git
+### Usage
+
+1. Include the DynamicLoader.js script in your HTML file:
+
+```html
+<script src="DynamicLoader.js"></script>
 ```
 
-2. Open the `index.html` file in a web browser.
+2. Register components using the `registerComponent` function:
 
-## Usage
+```javascript
+var HomeComponent = {
+  name: 'Home',
+  containerId: 'contentContainer',
+  render: function() {
+    return '<h2>Welcome to the Home page!</h2>';
+  }
+};
 
-- Click on the navigation links to navigate between different pages.
-- Observe how the content area updates dynamically based on the URL hash.
+DynamicLoader.registerComponent(HomeComponent);
+```
+
+3. Register routes using the `registerRoute` function:
+
+```javascript
+DynamicLoader.registerRoute('/', 'Home');
+```
+
+4. Handle route changes:
+
+```javascript
+window.addEventListener('load', DynamicLoader.handleRouteChange);
+window.addEventListener('popstate', DynamicLoader.handleRouteChange);
+```
+
+5. Customize and enhance the library as needed to meet your project requirements.
+
+## API Reference
+
+### `registerComponent(component)`
+
+Register a component with the DynamicLoader.js library.
+
+- `component`: An object representing the component with the following properties:
+  - `name` (string): The name of the component.
+  - `containerId` (string): The ID of the HTML element where the component should be rendered.
+  - `render` (function): A function that returns the HTML content of the component.
+
+### `registerRoute(route, componentName)`
+
+Register a route with the DynamicLoader.js library.
+
+- `route` (string): The route URL.
+- `componentName` (string): The name of the component to render for the specified route.
+
+### `handleRouteChange()`
+
+Handle route changes triggered by the browser's `load` and `popstate` events.
+
+### `getCurrentPath()`
+
+Get the current path from the URL.
+
+### `handleNotFound()`
+
+Handle 404 errors when a route is not found. Renders the NotFoundComponent if registered; otherwise, logs an error.
 
 ## Contributing
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to submit a pull request or create an issue in the GitHub repository.
+Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to submit a pull request or create an issue in the [GitHub repository](https://github.com/your-username/dynamic-loader-js).
 
 ## License
 
