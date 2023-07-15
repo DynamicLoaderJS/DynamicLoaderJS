@@ -42,13 +42,28 @@ var DynamicLoader = (function() {
 
   // Public function to handle route changes
   function handleRouteChange() {
-    var path = window.location.pathname;
+    var path = getCurrentPath();
     var componentName = routes[path];
     if (!componentName) {
       console.error('Route not found:', path);
       return;
     }
     renderComponent(componentName);
+  }
+  
+  // Public function to get the current path from the URL
+  function getCurrentPath() {
+    return window.location.pathname;
+  }
+  
+  // Public function to get the current hash from the URL
+  function getCurrentHash() {
+    return window.location.hash.slice(1);
+  }
+  
+  // Public function to get the current URL
+  function getCurrentURL() {
+    return window.location.href;
   }
 
   // Public API
@@ -57,6 +72,9 @@ var DynamicLoader = (function() {
     render: render,
     setState: setState,
     registerRoute: registerRoute,
-    handleRouteChange: handleRouteChange
+    handleRouteChange: handleRouteChange,
+    getCurrentPath: getCurrentPath,
+    getCurrentHash: getCurrentHash,
+    getCurrentURL: getCurrentURL
   };
 })();
